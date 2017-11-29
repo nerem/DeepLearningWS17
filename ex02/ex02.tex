@@ -1,0 +1,157 @@
+\documentclass[a4paper, reqno]{amsart}
+\usepackage{amssymb,amsmath,amsfonts,amsthm,mathrsfs}
+%\usepackage{showkeys}
+\usepackage[colorlinks=true, citecolor=blue, anchorcolor=red]{hyperref}
+\usepackage{enumerate}
+
+\newcommand{\mc}[1]{\mathcal #1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\G}{\mathbb G}
+\renewcommand{\Re}{\mathop{\text{\upshape{Re}}}}
+\renewcommand{\Im}{\mathop{\text{\upshape{Im}}}}
+\newcommand{\cl}{\text{\upshape{cl}}}
+
+\newcommand{\op}{\mathop{\text{\upshape{op}}}}
+\newcommand{\rank}{\mathop{\text{\upshape{rank}}}}
+\newcommand{\ms}[1]{\mathscr{#1}}
+\newcommand{\scp}[2]{\langle #1,#2\rangle}
+\newcommand{\cal}[1]{{\mathcal #1}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\const}{\operatorname{const}}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\bar}[1]{\overline{#1}}
+\newcommand{\id}{\mathop{\textrm{id}}\nolimits}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\renewcommand{\mod}[1]{\left|#1\right|}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\phi}{\varphi}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\arabic{section}-\arabic{equation}}
+
+\begin{document}
+
+
+
+\title[Exercise 1]
+{Deep Learning in Computer Vision - Exercise 1}
+\author{Karsten Herth}
+\author{Felix Hummel}
+\author{Felix Kammerlander}
+\author{David Palosch}
+\thanks{}
+\date{November 27, 2017}
+
+\maketitle
+
+{\bf Exercise 2.5} \\
+Let $x_1, \ldots, x_L$ be random samples drawn from a uniform distribution on the interval $[0, \theta].$
+\begin{enumerate}
+[(a)]
+	\item $\overline x = \sum_{l=1}^L x_l$ is a biased estimator of $\theta.$
+	\item $2\overline x$ is an unbiased estimator of $\theta.$
+	\item The standard error for the estimator $2\overline x$ is given by 
+		$\sqrt{\frac{4}{3L}\theta^2 + \frac{L-1}{L}\theta^2 - \theta^2}$, which tends to zero for $L \to \infty.$
+	\item Another biased estimator for $\theta$ is given by $\hat x := \max\{ x_1, \ldots, x_L\}.$ Its standard error is given by
+		$\sqrt{\frac{L}{L+2}\theta^2 - \left(\frac{L}{L+1}\theta \right)^2}$ which tends to zero as $L \to \infty.$
+\end{enumerate}
+
+\begin{proof}\
+	\begin{enumerate}
+	[(a)]
+		\item
+			Using
+			\begin{align*}
+				P(x_l < x) = \begin{cases} 
+								1, 					& x \geq \theta, \\
+								\frac{x}{\theta}, 	& 0 \leq x \leq \theta, \\ 
+								0, 					& x < 0, 
+							\end{cases}
+			\end{align*}
+			together with the linearity of the expectation, we see that
+				\begin{align*}
+					\E[\overline x]
+						 = \frac{1}{L}\sum_{l=1}^L \E[x_l] 
+						 = \frac{1}{L}\sum_{l=1}^L \int_0^\theta \frac{x}{\theta} \, dx 
+						 = \frac{1}{L}\sum_{l=1}^L \left[ \frac{x^2}{2\theta} \right]^\theta_0 
+						 = \frac{\theta}{2} \not= \theta,
+				\end{align*}
+				whence $\overline x$ is a biased estimator of $\theta.$
+			\item Obviously, since $\E[2\overline x] = \theta$ by (a) and the linearity of the expectation, 
+				the estimator $2\overline x = \frac{2}{L}\sum_{l=1}^L x_l$ is an unbiased estimator for $\theta.$
+			\item We calculate the variance $\operatorname{Var}(2\overline x)$. Using that $x_k$ and $x_l$ are independent for $k\not= l$, we obtain
+				\begin{align*}
+					\operatorname{Var}(2\overline x)
+						& = \E \left[ (2\overline x - \E[2\overline x])^2 \right] \\
+						& = \E \left[ (2\overline x - \theta)^2 \right] \\
+						& = \E \left[ 4\overline x^2 4 \overline x \theta + \theta^2 \right] \\
+						& = 4 \E [\overline x^2] - 2\theta^2 + \theta^2 \\
+						& = \frac{4}{L^2} \left( \sum_{l=1}^L \E[x_l^2] + \sum_{k\not=l} \E[x_k x_l] \right) - \theta^2 \\
+						& = \frac{4}{L^2} \left( \sum_{l=1}^L \E[x_l^2] + \sum_{k\not=l} \E[x_k] \E [x_l] \right) - \theta^2 \\
+						& = \frac{4}{L^2} \left( \sum_{l=1}^L \int_0^\theta \frac{x^2}{\theta}\, dx + \sum_{k\not= l} \frac{\theta^2}{4} \right) - \theta^2 \\
+						& = \frac{4\theta^2}{3L} + \frac{L(L-1)}{L^2}\theta^2 - \theta^2 \\
+						& = \frac{4\theta^2}{3L} + \frac{(L-1)}{L}\theta^2 - \theta^2.
+				\end{align*}
+				Here, we have used that $\sum_{k\not= l} 1 = 2\cdot \frac{L(L-1)}{2} = L(L-1).$
+				Letting $L \to \infty$ we get 
+				$$\operatorname{Var}(2\overline x) =
+						\frac{4\theta^2}{3L} + \frac{L(L-1)}{L}\theta^2 - \theta^2
+						\to 0 + \theta^2 - \theta^2 = 0$$
+				and the assertion follows.
+			\item For $\hat x = \max\{ x_1, \ldots, x_L\}$ it holds that
+				\begin{align*}
+					P(\hat x < x) = P(x_l < x, l=1,\ldots, L) =
+						\begin{cases}
+							1, & x \geq \theta \\
+							\left( \frac{x}{\theta}\right)^L, & 0 \leq x \leq \theta, \\
+							0, & x \leq 0.
+						\end{cases}
+				\end{align*}
+				Therefore, the density function of $\hat x$ is given by
+				\begin{align*}
+					f_{\hat x}(x) = 
+						\begin{cases}
+							\frac{L}{\theta^L}x^{L-1}, & 0 \leq x \leq \theta, \\
+							0, & x \not\in [0, \theta].
+						\end{cases}
+				\end{align*}
+				First, we show that $\hat x$ is an biased estimator for $\theta$: It holds that
+				\begin{align*}
+					\E[\hat x] = \int_0^\theta \frac{L}{\theta^L}x^L\, dx 
+						= \frac{L}{\theta^L}\left[ x^{L+1} \frac{1}{L+1} \right]^\theta_0
+						= \frac{L}{L+1} \frac{\theta^{L+1}}{\theta^L}
+						= \frac{L}{L+1}\theta \not= \theta,
+				\end{align*}
+				whence $\hat x$ is biased (but the bias is getting smaller the larger $L$ is). Again, we calculate the variance of $\hat x$ and we get
+				\begin{align*}
+					\operatorname{Var}(\hat x)
+						& = \E \left[ \left(\hat x - \frac{L}{L+1}\theta \right)^2 \right] \\
+						& = \E [\hat x^2] - \left( \frac{L}{L+1} \theta \right)^2 \\
+						& = \int_0^\theta \frac{L}{\theta^L}x^{L+1}\, dx - \left( \frac{L}{L+1} \theta \right)^2 \\
+						& = \frac{L}{L+2}\theta^2 - \left( \frac{L}{L+1} \theta \right)^2.
+				\end{align*}
+				Taking $L \to \infty$ we obtain
+				\begin{align*}
+					\operatorname{Var}(\hat x) = \frac{L}{L+2}\theta^2 - \left( \frac{L}{L+1} \theta \right)^2 \to \theta^2 - \theta^2 = 0
+				\end{align*}
+				and the assertion follows.
+	\end{enumerate}
+\end{proof}
+
+\end{document}
