@@ -1,0 +1,121 @@
+\documentclass[a4paper, reqno]{amsart}
+\usepackage{amssymb,amsmath,amsfonts,amsthm,mathrsfs}
+%\usepackage{showkeys}
+\usepackage[colorlinks=true, citecolor=blue, anchorcolor=red]{hyperref}
+\usepackage{enumerate}
+
+\newcommand{\mc}[1]{\mathcal #1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\G}{\mathbb G}
+\renewcommand{\Re}{\mathop{\text{\upshape{Re}}}}
+\renewcommand{\Im}{\mathop{\text{\upshape{Im}}}}
+\newcommand{\cl}{\text{\upshape{cl}}}
+
+\newcommand{\op}{\mathop{\text{\upshape{op}}}}
+\newcommand{\rank}{\mathop{\text{\upshape{rank}}}}
+\newcommand{\ms}[1]{\mathscr{#1}}
+\newcommand{\scp}[2]{\langle #1,#2\rangle}
+\newcommand{\cal}[1]{{\mathcal #1}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\const}{\operatorname{const}}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\bar}[1]{\overline{#1}}
+\newcommand{\id}{\mathop{\textrm{id}}\nolimits}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\renewcommand{\mod}[1]{\left|#1\right|}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\phi}{\varphi}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\arabic{section}-\arabic{equation}}
+
+\begin{document}
+
+
+
+\title[Exercise 1]
+{Deep Learning in Computer Vision - Exercise 3}
+\author{Karsten Herth}
+\author{Felix Hummel}
+\author{Felix Kammerlander}
+\author{David Palosch}
+\thanks{}
+\date{January 7, 2018}
+
+\maketitle
+
+{\bf Exercise 3.1} \\
+Let $N, M \in \N.$ Further, let $f\colon \R^n \to \R^m$ and $g\colon \R^m \times \R^m \to \R$ both be differentiable. Let $h \colon \R^n \to \R$ be defined by
+$h(x) := g(f(x), f(x)).$ \\
+Then, $h$ is differentiable with
+\begin{align*}
+	(Dh)(x) = (Dg)(f(x), f(x)) \cdot \begin{pmatrix} (Df)(x) \\ (Df)(x) \end{pmatrix} \in \R^{1 \times N}
+\end{align*}
+for all $x \in \R^N.$
+
+\begin{proof} \hfill \\
+	For any $x \in \R^N$ the matrix $(Df)(x)$ is of size $M \times N$
+	and for all $x \in R^{2M}$ the matrix $(Dg)(x)$ is of size $1 \times 2M.$\\
+	We define the functions
+	\begin{align*}
+		h_1(x) & := (f(x), 0) \in \R^{1\times 2M} \\
+		h_2(x) & := (0, f(x)) \in \R^{1 \times 2M} \\
+		h_3(x) & := h_1(x) + h_2(x) \in \R^{1\times 2M}
+	\end{align*}
+	for $x \in \R^N$, such that $h(x) = g(h_3(x)).$
+	Obviously, $h_1$ and $h_2$ (and therefore, $h_3$ as well) are differentiable with derivatives
+	\begin{align*}
+		(Dh_1)(x) & = \begin{pmatrix}
+			\nabla f_1(x)^\top \\
+			\vdots \\
+			\nabla f_M^\top(x) \\
+			0 \\
+			\vdots \\ 
+			0
+		\end{pmatrix}
+		= \begin{pmatrix}
+		 (Df)(x) \\ 0
+		\end{pmatrix}
+		\in \R^{2M \times N} \\
+		(Dh_2)(x) & = \begin{pmatrix}
+			0 \\
+			\vdots \\
+			0 \\
+			\nabla f_1(x)^\top \\
+			\vdots \\
+			\nabla f_M(x)^\top
+		\end{pmatrix}
+		= \begin{pmatrix}
+		 0 \\ (Df)(x)
+		\end{pmatrix}
+		\in \R^{2M \times N}
+	\end{align*}
+	for $x \in \R^N.$ \\
+	In particular, $h = g \circ h_3$ is differentiable by the chain rule and we obtain, using the linearity of the derivative,
+	\begin{align*}
+		(Dh)(x)
+			& = (Dg)(h_3(x)) \cdot (Dh_3)(x) \\
+			& = (Dg)(f(x), f(x)) \cdot \left[ (Dh_1)(x) + (Dh_2)(x) \right] \\
+			& = (Dg)(f(x), f(x)) \cdot \begin{pmatrix} 	\nabla f_1(x)^\top \\ \vdots \\ \nabla f_M(x)^\top \\ \nabla f_1(x)^\top \\ \vdots \\ \nabla f_M(x)^\top \end{pmatrix} \\
+			& = (Dg)(f(x), f(x)) \cdot \begin{pmatrix} (Df)(x) \\ (Df)(x) \end{pmatrix} \in \R^{1\times N}
+	\end{align*}
+	for $x \in \R^N.$
+\end{proof}
+
+\end{document}
