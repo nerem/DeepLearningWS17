@@ -116,6 +116,26 @@ for all $x \in \R^N.$
 			& = (Dg)(f(x), f(x)) \cdot \begin{pmatrix} (Df)(x) \\ (Df)(x) \end{pmatrix} \in \R^{1\times N}
 	\end{align*}
 	for $x \in \R^N.$
-\end{proof}
+\end{proof} ~\\ \\
 
+{\bf Exercise 3.2} \\
+Let 
+\begin{align*}
+f(x,w) := \sum\limits_{i,j = 0}^2 w_{1,i}^{2,0} w_{0,j}^{1,i} x_j
+\end{align*} 
+and
+\begin{align*}
+E(w) = \frac{1}{L} \sum\limits_{l=1}^L \left(d^l - f(x^l,w) \right)^2,
+\end{align*}
+where $x^l$ denotes the l-th sample and $d^l$ denotes the l-th label. \\
+We calculate according to the chain rule
+\begin{align*}
+\frac{\partial}{\partial w_{1,1}^{2,0}} E(w) &= \frac{2}{L} \sum\limits_{l=1}^L \left( d^l - f(x^l,w) \right) \frac{\partial}{\partial w_{1,1}^{2,0}} f(x^l,w) \\
+&= \frac{2}{L} \sum\limits_{l=1}^L \left( d^l - f(x^l,w) \right) \sum\limits_{j=0}^2 w_{0,j}^{1,1} x^l_j,
+\end{align*}
+as well as
+\begin{align*}
+\frac{\partial}{\partial w_{0,1}^{1,0}} E(w) &= \frac{2}{L} \sum\limits_{l=1}^L \left( d^l - f(x^l,w) \right) \frac{\partial}{\partial w_{0,1}^{1,0}} f(x^l,w) \\
+&= \frac{2}{L} \sum\limits_{l=1}^L \left( d^l - f(x^l,w) \right) w_{1,0}^{2,0} x^l_1.
+\end{align*}
 \end{document}
