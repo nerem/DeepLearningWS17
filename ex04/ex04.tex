@@ -1,0 +1,75 @@
+\documentclass[a4paper, reqno]{amsart}
+\usepackage{amssymb,amsmath,amsfonts,amsthm,mathrsfs}
+%\usepackage{showkeys}
+\usepackage[colorlinks=true, citecolor=blue, anchorcolor=red]{hyperref}
+\usepackage{enumerate}
+\usepackage{underscore}
+
+\newcommand{\mc}[1]{\mathcal #1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\G}{\mathbb G}
+\renewcommand{\Re}{\mathop{\text{\upshape{Re}}}}
+\renewcommand{\Im}{\mathop{\text{\upshape{Im}}}}
+\newcommand{\cl}{\text{\upshape{cl}}}
+
+\newcommand{\op}{\mathop{\text{\upshape{op}}}}
+\newcommand{\rank}{\mathop{\text{\upshape{rank}}}}
+\newcommand{\ms}[1]{\mathscr{#1}}
+\newcommand{\scp}[2]{\langle #1,#2\rangle}
+\newcommand{\cal}[1]{{\mathcal #1}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\const}{\operatorname{const}}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\bar}[1]{\overline{#1}}
+\newcommand{\id}{\mathop{\textrm{id}}\nolimits}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\renewcommand{\mod}[1]{\left|#1\right|}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\phi}{\varphi}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\arabic{section}-\arabic{equation}}
+
+\begin{document}
+
+
+
+\title[Exercise 4]
+{Deep Learning in Computer Vision - Exercise 4}
+\author{Karsten Herth}
+\author{Felix Hummel}
+\author{Felix Kammerlander}
+\author{David Palosch}
+\thanks{}
+\date{January 23, 2018}
+
+\maketitle
+
+{\bf Exercise 4.1c} \\	The \texttt{tf.nn.conv2d_transpose()} requires to define the output shape since it is not necessarily unique. For example, let the input shape for a convolution be
+	\begin{enumerate}
+	[(a)]
+		\item $4 \times 4,$
+		\item $3 \times 3.$
+	\end{enumerate}
+	In both cases we use a filter of size $3 \times 3$, striding of $2$ and the padding option SAME. Then, in both cases (a) and (b), performing a \texttt{conv2d()} yields
+	an output of $2 \times 2.$ Hence, if we want to go back using \texttt{tf.nn.conv2d_transpose()}, we have to tell tensorflow if we came from the $4 \times 4$ input or the
+	$3 \times 3$ input. \\
+	The \texttt{tf.layers.conv2d_transpose()} uses the $4 \times 4$ output by default. See also our file ex_04_1_c.ipynb, where we implemented this example.
+
+\end{document}
