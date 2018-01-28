@@ -88,9 +88,9 @@ Let $g:\R^n \to \R$ be a differentiable function, $A\in \R^{m\times n}$. We cons
 \begin{enumerate}[(a)]
 \item The chainrule yields
 \begin{align*}
-\nabla E(x) = (E'(x))^T = (A^T g'(x))^T = \nabla g(x) A.
+\nabla E(x) = (E'(x))^T = (g'(Ax)A)^T = A^T \nabla g(Ax).
 \end{align*}
-\item Since the action of a convolutional layer is linear, it can be viewed as a mapping $x\mapsto Mx$ with a matrix $M$. At any point is the derivative of this mapping (which is necessary for the backpropagation algorithm) given by the transpose matrix $M^T$. This matrix $M^T$ describes a transpose convolution. 
+\item Since the action of a convolutional layer is linear, it can be viewed as a mapping $x\mapsto Mx$ with a matrix $M$. Since the backpropagation algorithm requires the gradients of composite functions we need the mapping associated with the transpose of $M$ as seen in part (a). The transpose of $M$ in turn belongs to a tanspose convolution.
 \end{enumerate}
 
 \end{document}
