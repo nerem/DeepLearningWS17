@@ -61,6 +61,17 @@
 
 \maketitle
 
+{\bf Exercise 4.1a} \\
+Possible values for $x_1, \ldots x_8$  are 
+\begin{center}
+\begin{tabular}{ll}
+$x_1 = 17,$ & $x_2 = 13,$ \\
+$x_3 = 3,$ & $x_4 = 4,$ \\
+$x_5 = 13,$ & $x_6 = 13,$ \\
+$x_7 = 2,$ & $x_8 = 3.$
+\end{tabular}
+\end{center} ~\\
+
 {\bf Exercise 4.1c} \\	The \texttt{tf.nn.conv2d_transpose()} requires to define the output shape since it is not necessarily unique. For example, let the input shape for a convolution be
 	\begin{enumerate}
 	[(a)]
@@ -70,6 +81,16 @@
 	In both cases we use a filter of size $3 \times 3$, striding of $2$ and the padding option SAME. Then, in both cases (a) and (b), performing a \texttt{conv2d()} yields
 	an output of $2 \times 2.$ Hence, if we want to go back using \texttt{tf.nn.conv2d_transpose()}, we have to tell tensorflow if we came from the $4 \times 4$ input or the
 	$3 \times 3$ input. \\
-	The \texttt{tf.layers.conv2d_transpose()} uses the $4 \times 4$ output by default. See also our file ex_04_1_c.ipynb, where we implemented this example.
+	The \texttt{tf.layers.conv2d_transpose()} uses the $4 \times 4$ output by default. See also our file ex_04_1_c.ipynb, where we implemented this example. \\ \\
+
+{\bf Exercise 4.3} \\
+Let $g:\R^n \to \R$ be a differentiable function, $A\in \R^{m\times n}$. We consider the composite function $E:\R^n \to \R$, $x\mapsto g(Ax)$.
+\begin{enumerate}[(a)]
+\item The chainrule yields
+\begin{align*}
+\nabla E(x) = (E'(x))^T = (A^T g'(x))^T = \nabla g(x) A.
+\end{align*}
+\item Since the action of a convolutional layer is linear, it can be viewed as a mapping $x\mapsto Mx$ with a matrix $M$. At any point is the derivative of this mapping (which is necessary for the backpropagation algorithm) given by the transpose matrix $M^T$. This matrix $M^T$ describes a transpose convolution. 
+\end{enumerate}
 
 \end{document}
